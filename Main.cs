@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Flow.Launcher.Plugin;
 using Flow.Plugin.WindowsSettings.Classes;
@@ -52,6 +53,8 @@ namespace Flow.Plugin.WindowsSettings
         /// </summary>
         private IEnumerable<WindowsSetting>? _settingsList;
 
+        private TaskLinkList? _taskLinkList;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Main"/> class.
         /// </summary>
@@ -86,6 +89,9 @@ namespace Flow.Plugin.WindowsSettings
             ResultHelper.Init(_context.API);
 
             TranslationHelper.TranslateAllSettings(_settingsList);
+
+            TaskLinkResultHelper.Init(_context.API);
+            _taskLinkList = JsonTaskLinkHelper.ReadAllPossibleTaskLink();
         }
 
         /// <summary>
@@ -102,9 +108,10 @@ namespace Flow.Plugin.WindowsSettings
 
 
             var newList = ResultHelper.GetResultList(_settingsList, query, _defaultIconPath);
-            return newList;
 
+            var taskLinkQueryResults = TaskLinkResultHelper.GetResultList(_taskLinkList, query, _defaultIconPath);
             
+            return newList.Concat(taskLinkQueryResults).ToList();
         }
 
         /// <summary>

@@ -52,6 +52,8 @@
     <EmbeddedResource Include="WindowsSettings.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Remove="TaskLink.json" />
+    <EmbeddedResource Include="TaskLink.json" />
   </ItemGroup>
 
   <ItemGroup>
